@@ -7,14 +7,14 @@ from slackeventsapi import SlackEventAdapter
 import pyrebase
 
 firebaseConfig = {
-  "apiKey": "AIzaSyA-iQqbbopxm7gtcMzI5k-S5UPL5P56uuQ",
-  "authDomain": "hgbot-6261e.firebaseapp.com",
-  "databaseURL": "https://hgbot-6261e-default-rtdb.firebaseio.com/",
-  "projectId": "hgbot-6261e",
-  "storageBucket": "hgbot-6261e.appspot.com",
-  "messagingSenderId": "161839688351",
-  "appId": "1:161839688351:web:af0ecfebc23afde5ce10aa",
-  "measurementId": "G-RP22TSC8P1"
+    'apiKey': "AIzaSyA-iQqbbopxm7gtcMzI5k-S5UPL5P56uuQ",
+    'authDomain': "hgbot-6261e.firebaseapp.com",
+    'databaseURL': "https://hgbot-6261e-default-rtdb.firebaseio.com",
+    'projectId': "hgbot-6261e",
+    'storageBucket': "hgbot-6261e.appspot.com",
+    'messagingSenderId': "161839688351",
+    'appId': "1:161839688351:web:af0ecfebc23afde5ce10aa",
+    'measurementId': "G-RP22TSC8P1"
 } # firebase configuration
 firebase=pyrebase.initialize_app(firebaseConfig)
 db=firebase.database()
@@ -51,18 +51,19 @@ def add_idea():
     channel_id = data.get('channel_id')
     idea_message = data.get('text')
     user_name = data.get('user_name')
+    channel_name = data.get('channel_name')
 
     print(request.form)
 
     # TODO: add the idea_message to the list of ideas on firebase db
-    if db.get().val() is None or channel_id not in db.get().val(): # if new channel  
-        db.child(channel_id).set({"count":1})
-        db.child(channel_id).child("ideas").child(1).set({"description":idea_message})
+    if db.get().val() is None or channel_name not in db.get().val(): # if new channel  
+        db.child(channel_name).set({"count":1})
+        db.child(channel_name).child("ideas").child(1).set({"description":idea_message})
 
     else:
-        count=db.child(channel_id).get().val()["count"]+1
-        db.child(channel_id).update({"count":count})
-        db.child(channel_id).child("ideas").child(count).set({"description":idea_message})
+        count=db.child(channel_name).get().val()["count"]+1
+        db.child(channel_name).update({"count":count})
+        db.child(channel_name).child("ideas").child(count).set({"description":idea_message})
 
     
     if BOT_ID != user_id:
