@@ -5,6 +5,13 @@ from pathlib import Path
 from dotenv import load_dotenv
 from flask import Flask, request, Response
 from slackeventsapi import SlackEventAdapter
+import pyrebase # pip install pyrebase
+
+firebaseConfig = {
+  
+} # firebase configuration
+firebase=pyrebase.initialize_app(firebaseConfig)
+db=firebase.database()
 
 env_path = Path('.') / '.env'
 
@@ -41,8 +48,14 @@ def add_idea():
     print(request.form)
 
     # TODO: add the idea_message to the list of ideas on firebase db
+    if db.get().val() is None or channel_id not in db.get().val(): # if new channel  
+        db.child(channel_id).set({"count":1})
+        db.child(channel_id).child("ideas").child(1).set({"description":idea_message})
 
-
+    else:
+        count=db.child(channel_id).get().val()["count"]+1
+        db.child(channel_id).update({"count":count})
+        db.child(channel_id).child("ideas").child(count).set({"description":idea_message})
 
     
     if BOT_ID != user_id:
