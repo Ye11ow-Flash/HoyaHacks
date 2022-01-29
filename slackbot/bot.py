@@ -37,6 +37,7 @@ def add_idea():
     user_id = data.get('user_id')
     channel_id = data.get('channel_id')
     idea_message = data.get('text')
+    user_name = data.get('user_name')
 
     print(request.form)
 
@@ -47,7 +48,7 @@ def add_idea():
     
     if BOT_ID != user_id:
 
-        client.chat_postMessage(channel=channel_id,text=f"Idea added: {idea_message}")
+        client.chat_postMessage(channel=channel_id,text=f"{user_name} added an Idea: {idea_message}")
 
     return Response(),200
 
