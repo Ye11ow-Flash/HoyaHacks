@@ -160,8 +160,8 @@ def todo():
 
 
     #  retrieve data form the db
-    if db.get().val() is None or channel_name not in db.get().val(): # if new channel
-        db.child(channel_name).set({"todo-count":1})
+    if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child('todo-list').child("todo-count").get().val() is None): # if new channel
+        db.child(channel_name).child('todo-list').set({"todo-count":1})
         db.child(channel_name).child("todo-list").child(1).set({
             "description":todo_message,
             "author-id":user_id,
@@ -170,8 +170,8 @@ def todo():
         
 
     else:
-        count=db.child(channel_name).get().val()["todo-count"]+1
-        db.child(channel_name).update({"todo-count":count})
+        count=db.child(channel_name).child('todo-list').get().val()["todo-count"]+1
+        db.child(channel_name).child('todo-list').update({"todo-count":count})
         db.child(channel_name).child("todo-list").child(count).set({
             "description":todo_message,
             "author-id":user_id,
@@ -195,13 +195,11 @@ def show_todo_list():
     channel_name = data.get('channel_name')
 
 
-    client.chat_postMessage(channel=channel_id,text=f"Showing all todo's in {channel_name}")
-    i=0
-    message = ''
-    for todo in db.child(channel_name).child("todo-list").get().val():
-        if i>0:
-            message+=str(i)+". " + todo['description'] + ' Created by @' + todo['author-name']
-        i+=1
+    i=db.child(channel_name).child('todo-list').child("todo-count").get().val()
+    message = f"Showing all todo in {channel_name}: \n"
+    for j in range(1, i+1):
+        message+=str(j) +'. ' + (str(db.child(channel_name).child("todo-list").child(str(j)).child('description').get().val())) + '\n'
+        j+=1
 
     print(message)
     client.chat_postMessage(channel=channel_id,text=message)
