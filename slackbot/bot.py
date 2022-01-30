@@ -98,7 +98,7 @@ def add_feature():
 
 
     if BOT_ID != user_id:
-        client.chat_postMessage(channel=channel_id,text=f"{user_name} added an Idea: {feature_message}")
+        client.chat_postMessage(channel=channel_id,text=f"{user_name} added a Feature: {feature_message}")
     return Response(),200
 
 if __name__ == "__main__":
