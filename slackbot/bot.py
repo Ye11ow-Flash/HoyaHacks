@@ -1,4 +1,3 @@
-from crypt import methods
 import slack
 import os
 from pathlib import Path
