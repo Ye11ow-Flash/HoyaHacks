@@ -1,3 +1,4 @@
+from crypt import methods
 import slack
 import os
 from pathlib import Path
@@ -116,11 +117,36 @@ def add_feature():
     return Response(),200
 
 
+
+# show-features command
+@app.route('/show-features',methods=['POST'])
+def show_features():
+    data = request.form
+    channel_id = data.get('channel_id')
+    channel_name = data.get('channel_name')
+
+    client.chat_postMessage(channel=channel_id,text=f"Showing all features in {channel_name}")
+    i=0
+    for feature in db.child(channel_name).child("features").get().val():
+        if i>0:
+            message=str(i)+". " + feature['description']
+            client.chat_postMessage(channel=channel_id,text=message)
+        i+=1
+    return Response(),200
+
+# clear command
+@app.route('/_clear',methods=['POST'])
+def clear():
+    data=request.form
+    channel_name=data.get('channel_name')
+    db.child(channel_name).remove()
+    return Response(),200
+
+
 # todo command - add todo to db
 @app.route('/todo',methods=['POST'])
 def todo():
     data = request.form
-
     user_id = data.get('user_id')
     channel_id = data.get('channel_id')
     todo_message = data.get('text')
@@ -150,33 +176,31 @@ def todo():
     if BOT_ID != user_id:
         client.chat_postMessage(channel=channel_id,text=f"{user_name} added a todo: {todo_message}")
     return Response(),200
-    # create todo to list of todo's
     # show-todo-list = show list of todo's
     # /remove-todo 
 
-# show-ideas command
-@app.route('/show-features',methods=['POST'])
-def show_features():
+@app.route('show-todo-list', methods='POST')
+def show_todo_list():
+    # request data
     data = request.form
+    user_id = data.get('user_id')
     channel_id = data.get('channel_id')
+    todo_message = data.get('text')
+    user_name = data.get('user_name')
     channel_name = data.get('channel_name')
 
-    client.chat_postMessage(channel=channel_id,text=f"Showing all features in {channel_name}")
+
+    client.chat_postMessage(channel=channel_id,text=f"Showing all todo's in {channel_name}")
     i=0
-    for feature in db.child(channel_name).child("features").get().val():
+    message = ''
+    for todo in db.child(channel_name).child("todo-list").get().val():
         if i>0:
-            message=str(i)+". " + feature['description']
-            client.chat_postMessage(channel=channel_id,text=message)
+            message+=str(i)+". " + todo['description'] + ' Created by ' + todo['author_name'] + '/n'
         i+=1
+        
+    client.chat_postMessage(channel=channel_id,text=message)
     return Response(),200
 
-# clear command
-@app.route('/_clear',methods=['POST'])
-def clear():
-    data=request.form
-    channel_name=data.get('channel_name')
-    db.child(channel_name).remove()
-    return Response(),200
 
 
 if __name__ == "__main__":
