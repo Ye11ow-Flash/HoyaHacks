@@ -38,7 +38,7 @@
 
 # 🧘‍♀️ Light-Bulb Moment
 
-For any Hackathon, the most important and crutial part is to decide on a **idea**. In the initial stages of HoyaHacks we struggled on deciding on what topic or idea should we work on. Each and every member of our team had tons of ideas and the discord group chat was getting chaotic. Additionally, new members who joined later has issues with keeping up as they had to read the whole chat history. 
+For any Hackathon, the most important and crucial part is to decide on a **idea**. In the initial stages of HoyaHacks we struggled on deciding on what topic or idea should we work on. Each and every member of our team had tons of ideas and the discord group chat was getting chaotic. Additionally, new members who joined later has issues with keeping up as they had to read the whole chat history. 
 
 Thus, we decided to build a <img width="25" src="https://cdn3.iconfinder.com/data/icons/logos-and-brands-adobe/512/306_Slack-512.png" alt="Slack"/> Slack bot which can manage and maintain our ideas, so we can streamline and smoothen the whole process right from idea selection to deciding the features and actually implementing the project.
 
@@ -83,9 +83,9 @@ Join our <a href="https://zenml.io/slack-invite" target="_blank">
 
 - **Summarization** of the project ideas
 - A **simple and clear** way to brain-strom ideas
-- **Brilliant** yet simple way to organise thoughts of each and every team member
+- **Brilliant** yet simple way to organize thoughts of each and every team member
 - Painless **deployment and configuration** of bot
-- **Scale up** your ideas transparently and logically to suit your training and deployment needs
+- **Scale-up** your ideas transparently and logically to suit your training and deployment needs
 - Everyone gets a fair chance to voice their thoughts
 
 <!-- # 📖 Learn More -->
@@ -177,7 +177,7 @@ Feel free to reach out to our team members. We will be happy to help you.
 
 ## Team members:
 - [@ye11ow_flash](https://www.linkedin.com/in/jaineel97/)
-- [@hlim0](https://www.linkedin.com/in/heechanlim/)
-- [@SuleymanEminov-98](https://github.com/SuleymanEminov)
+- [@heechanlim](https://www.linkedin.com/in/heechanlim/)
+- [@suleyman-eminov](https://www.linkedin.com/in/suleyman-eminov/)
 
 <!-- # 📜 License -->
