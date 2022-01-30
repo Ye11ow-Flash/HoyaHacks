@@ -8,7 +8,7 @@
 
 <!-- ------------------------------------------ -->
 
-<h4 align="center">A Slack Bot for all your Hackathon Crazy Brainstromming Sessions.</h4>
+<h4 align="center">A Slack Bot for all your Hackathon Crazy Brainstorming Sessions.</h4>
 
 <p align="center">
   <a href="https://img.shields.io/badge/firebase--admin-5.2.0%20-orange">
