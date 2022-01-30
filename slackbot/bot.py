@@ -114,6 +114,46 @@ def add_feature():
         client.chat_postMessage(channel=channel_id,text=f"{user_name} added a Feature: {feature_message}")
     return Response(),200
 
+
+# todo command - add todo to db
+@app.route('/todo',methods=['POST'])
+def todo():
+    data = request.form
+
+    user_id = data.get('user_id')
+    channel_id = data.get('channel_id')
+    todo_message = data.get('text')
+    user_name = data.get('user_name')
+    channel_name = data.get('channel_name')
+
+
+    #  retrieve data form the db
+    if db.get().val() is None or channel_name not in db.get().val(): # if new channel
+        db.child(channel_name).set({"todo-count":1})
+        db.child(channel_name).child("todo-list").child(1).set({
+            "description":todo_message,
+            "author-id":user_id,
+            "author-name":user_name})
+        
+        
+
+    else:
+        count=db.child(channel_name).get().val()["todo-count"]+1
+        db.child(channel_name).update({"todo-count":count})
+        db.child(channel_name).child("todo-list").child(count).set({
+            "description":todo_message,
+            "author-id":user_id,
+            "author-name":user_name})
+
+
+    if BOT_ID != user_id:
+        client.chat_postMessage(channel=channel_id,text=f"{user_name} added a todo: {todo_message}")
+    return Response(),200
+    # create todo to list of todo's
+    # show-todo-list = show list of todo's
+    # /remove-todo 
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
 
