@@ -38,11 +38,13 @@ def help():
 
     if BOT_ID != user_id:
         client.chat_postMessage(channel=channel_id,text="""Commands:
-                                                              /add-idea             Add an idea.
-                                                              /show-ideas           Show list of all ideas.
-                                                              /add-feature          Add a feature.
-                                                              /show-features        Show list of all features.
-                                                              /_clear               Clear the list for channel.""")
+                                                              /add-idea                  Add an idea.
+                                                              /show-ideas             Show list of all ideas.
+                                                              /add-feature            Add a feature.
+                                                              /show-features       Show list of all features.
+                                                              /_clear                      Clear the list for channel.
+                                                              /todo                        Add a todo task to a todo list
+                                                              /show-todo-list       Show list of all tasks in todo list""")
     return Response(),200
 
 # add-idea slash command
@@ -59,7 +61,7 @@ def add_idea():
     print(request.form)
 
     # TODO: add the idea_message to the list of ideas on firebase db
-    if db.get().val() is None or channel_name not in db.get().val(): # if new channel  
+    if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child("count").get().val() is None) : # if new channel  
         db.child(channel_name).set({"count":1})
         db.child(channel_name).child("ideas").child(1).set({"description":idea_message})
 
@@ -80,13 +82,13 @@ def show_ideas():
     channel_id = data.get('channel_id')
     channel_name = data.get('channel_name')
 
-    client.chat_postMessage(channel=channel_id,text=f"Showing all ideas in {channel_name}")
     i=0
+    message = f"Showing all ideas in {channel_name}: \n"
     for idea in db.child(channel_name).child("ideas").get().val():
         if i>0:
-            message=str(i)+". " + idea['description']
-            client.chat_postMessage(channel=channel_id,text=message)
+            message+=str(i)+". " + idea['description'] + '\n'
         i+=1
+    client.chat_postMessage(channel=channel_id,text=message)
     return Response(),200
 
 # add-feature command
@@ -102,13 +104,13 @@ def add_feature():
 
 
     #  retrieve data form the db
-    if db.get().val() is None or channel_name not in db.get().val(): # if new channel
-        db.child(channel_name).set({"count":1})
+    if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child("feature-count").get().val() is None): # if new channel
+        db.child(channel_name).set({"feature-count":1})
         db.child(channel_name).child("features").child(1).set({"description":feature_message})
 
     else:
-        count=db.child(channel_name).get().val()["count"]+1
-        db.child(channel_name).update({"count":count})
+        count=db.child(channel_name).get().val()["feature-count"]+1
+        db.child(channel_name).update({"feature-count":count})
         db.child(channel_name).child("features").child(count).set({"description":feature_message})
 
 
@@ -125,13 +127,13 @@ def show_features():
     channel_id = data.get('channel_id')
     channel_name = data.get('channel_name')
 
-    client.chat_postMessage(channel=channel_id,text=f"Showing all features in {channel_name}")
     i=0
+    message = f"Showing all features in {channel_name}: \n"
     for feature in db.child(channel_name).child("features").get().val():
         if i>0:
-            message=str(i)+". " + feature['description']
-            client.chat_postMessage(channel=channel_id,text=message)
+            message+=str(i)+". " + feature['description'] + '\n'
         i+=1
+    client.chat_postMessage(channel=channel_id,text=message)
     return Response(),200
 
 # clear command
@@ -179,7 +181,7 @@ def todo():
     # show-todo-list = show list of todo's
     # /remove-todo 
 
-@app.route('show-todo-list', methods='POST')
+@app.route('/show-todo-list',methods=['POST'])
 def show_todo_list():
     # request data
     data = request.form
@@ -195,12 +197,12 @@ def show_todo_list():
     message = ''
     for todo in db.child(channel_name).child("todo-list").get().val():
         if i>0:
-            message+=str(i)+". " + todo['description'] + ' Created by ' + todo['author_name'] + '/n'
+            message+=str(i)+". " + todo['description'] + ' Created by @' + todo['author-name']
         i+=1
-        
+
+    print(message)
     client.chat_postMessage(channel=channel_id,text=message)
     return Response(),200
-
 
 
 if __name__ == "__main__":
