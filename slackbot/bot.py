@@ -38,9 +38,10 @@ def help():
     if BOT_ID != user_id:
         client.chat_postMessage(channel=channel_id,text="""Commands:
                                                               /add-idea             Add an idea.
-                                                              /show-idea            Show list of all ideas.
+                                                              /show-ideas           Show list of all ideas.
                                                               /add-feature          Add a feature.
-                                                              /show-feature         Show list of all features.""")
+                                                              /show-features        Show list of all features.
+                                                              /_clear               Clear the list for channel.""")
     return Response(),200
 
 # add-idea slash command
@@ -152,6 +153,30 @@ def todo():
     # create todo to list of todo's
     # show-todo-list = show list of todo's
     # /remove-todo 
+
+# show-ideas command
+@app.route('/show-features',methods=['POST'])
+def show_features():
+    data = request.form
+    channel_id = data.get('channel_id')
+    channel_name = data.get('channel_name')
+
+    client.chat_postMessage(channel=channel_id,text=f"Showing all features in {channel_name}")
+    i=0
+    for feature in db.child(channel_name).child("features").get().val():
+        if i>0:
+            message=str(i)+". " + feature['description']
+            client.chat_postMessage(channel=channel_id,text=message)
+        i+=1
+    return Response(),200
+
+# clear command
+@app.route('/_clear',methods=['POST'])
+def clear():
+    data=request.form
+    channel_name=data.get('channel_name')
+    db.child(channel_name).remove()
+    return Response(),200
 
 
 if __name__ == "__main__":
