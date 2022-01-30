@@ -61,13 +61,13 @@ def add_idea():
     print(request.form)
 
     # TODO: add the idea_message to the list of ideas on firebase db
-    if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child("count").get().val() is None) : # if new channel  
-        db.child(channel_name).set({"count":1})
+    if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child('ideas').child("count").get().val() is None) : # if new channel  
+        db.child(channel_name).child('ideas').set({"count":1})
         db.child(channel_name).child("ideas").child(1).set({"description":idea_message})
 
     else:
-        count=db.child(channel_name).get().val()["count"]+1
-        db.child(channel_name).update({"count":count})
+        count=db.child(channel_name).child('ideas').get().val()["count"]+1
+        db.child(channel_name).child('ideas').update({"count":count})
         db.child(channel_name).child("ideas").child(count).set({"description":idea_message})
 
     
@@ -82,12 +82,16 @@ def show_ideas():
     channel_id = data.get('channel_id')
     channel_name = data.get('channel_name')
 
-    i=0
+    i = db.child(channel_name).child('ideas').child("count").get().val()
     message = f"Showing all ideas in {channel_name}: \n"
-    for idea in db.child(channel_name).child("ideas").get().val():
-        if i>0:
-            message+=str(i)+". " + idea['description'] + '\n'
-        i+=1
+    
+    for j in range(1, i+1):       
+        message+=str(j) +'. ' + (str(db.child(channel_name).child("ideas").child(str(j)).child('description').get().val())) + '\n'
+        j = j+1
+        # if i>0:
+        #     # message+=str(i)+". " + idea['description'] + '\n'
+        #     print("IDEA::" + idea)
+        # i+=1
     client.chat_postMessage(channel=channel_id,text=message)
     return Response(),200
 
@@ -104,13 +108,13 @@ def add_feature():
 
 
     #  retrieve data form the db
-    if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child("feature-count").get().val() is None): # if new channel
-        db.child(channel_name).set({"feature-count":1})
+    if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child('features').child("feature-count").get().val() is None): # if new channel
+        db.child(channel_name).child('features').set({"feature-count":1})
         db.child(channel_name).child("features").child(1).set({"description":feature_message})
 
     else:
-        count=db.child(channel_name).get().val()["feature-count"]+1
-        db.child(channel_name).update({"feature-count":count})
+        count=db.child(channel_name).child('features').get().val()["feature-count"]+1
+        db.child(channel_name).child('features').update({"feature-count":count})
         db.child(channel_name).child("features").child(count).set({"description":feature_message})
 
 
@@ -127,12 +131,11 @@ def show_features():
     channel_id = data.get('channel_id')
     channel_name = data.get('channel_name')
 
-    i=0
+    i=db.child(channel_name).child('features').child("feature-count").get().val()
     message = f"Showing all features in {channel_name}: \n"
-    for feature in db.child(channel_name).child("features").get().val():
-        if i>0:
-            message+=str(i)+". " + feature['description'] + '\n'
-        i+=1
+    for j in range(1, i+1):
+        message+=str(j) +'. ' + (str(db.child(channel_name).child("features").child(str(j)).child('description').get().val())) + '\n'
+        j+=1
     client.chat_postMessage(channel=channel_id,text=message)
     return Response(),200
 
@@ -225,4 +228,4 @@ if __name__ == "__main__":
 # TODO: Create /todo slash command
 #           Add to-do to list todo
 # TODO: Create /assign-task slash command
-# TODO: Create /show-my-tasks slash command
+# TODO: Create /show-todo-list slash command
