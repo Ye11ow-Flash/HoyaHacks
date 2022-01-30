@@ -71,8 +71,21 @@ def add_idea():
         client.chat_postMessage(channel=channel_id,text=f"{user_name} added an Idea: {idea_message}")
     return Response(),200
 
-# show-idea
-@app.route('/add-feature',methods=['POST'])
+# show-ideas command
+@app.route('/show-ideas',methods=['POST'])
+def show_ideas():
+    data = request.form
+    channel_id = data.get('channel_id')
+    channel_name = data.get('channel_name')
+
+    client.chat_postMessage(channel=channel_id,text=f"Showing all ideas in {channel_name}")
+    i=0
+    for idea in db.child(channel_name).child("ideas").get().val():
+        if i>0:
+            message=str(i)+". " + idea['description']
+            client.chat_postMessage(channel=channel_id,text=message)
+        i+=1
+    return Response(),200
 
 # add-feature command
 @app.route('/add-feature',methods=['POST'])
@@ -94,7 +107,7 @@ def add_feature():
     else:
         count=db.child(channel_name).get().val()["count"]+1
         db.child(channel_name).update({"count":count})
-        db.child(channel_name).child("ideas").child(count).set({"description":feature_message})
+        db.child(channel_name).child("features").child(count).set({"description":feature_message})
 
 
     if BOT_ID != user_id:
