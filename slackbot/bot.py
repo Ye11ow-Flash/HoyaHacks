@@ -49,7 +49,6 @@ def help():
 # add-idea slash command
 @app.route('/add-idea',methods=['POST'])
 def add_idea():
-    print("idea")
     data = request.form
     user_id = data.get('user_id')
     channel_id = data.get('channel_id')
@@ -57,9 +56,7 @@ def add_idea():
     user_name = data.get('user_name')
     channel_name = data.get('channel_name')
 
-    print(request.form)
-
-    # TODO: add the idea_message to the list of ideas on firebase db
+    #  add the idea_message to the list of ideas on firebase db
     if db.get().val() is None or channel_name not in db.get().val() or (db.child(channel_name).child('ideas').child("count").get().val() is None) : # if new channel  
         db.child(channel_name).child('ideas').set({"count":1})
         db.child(channel_name).child("ideas").child(1).set({"description":idea_message})
