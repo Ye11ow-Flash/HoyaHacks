@@ -208,22 +208,3 @@ def show_todo_list():
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
-
-
-
-# TODO: Create /show-ideas slash command - retrieve list of ideas from Firebase db ( 
-#                           (e.g idea1 by user_name1 - Instagram app clone /n 
-#                                idea2 by user_name2 - App that helps to sleep \n 
-#                                idea3 ...  ))
-# TODO: Create /create-project (title, idea-number )
-#           Decide what project hackers will be working on
-# TODO: Create /add-feature command (attr={""})
-#           Add feature to the list of features.
-# TODO: Create /show-features 
-#           Retrieve list of features from Firebase db and post message
-# TODO: Create /help slash command 
-#           Show list of commands 
-# TODO: Create /todo slash command
-#           Add to-do to list todo
-# TODO: Create /assign-task slash command
-# TODO: Create /show-todo-list slash command
