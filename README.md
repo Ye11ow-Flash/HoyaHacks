@@ -36,6 +36,9 @@
   </a>
 </p>
 
+<!-- Demo Video -->
+https://user-images.githubusercontent.com/25223395/151704583-d8d52c96-32d4-4039-9cc2-30112b3610fa.mp4
+
 # 🧘‍♀️ Light-Bulb Moment
 
 For any Hackathon, the most important and crucial part is to decide on a **idea**. In the initial stages of HoyaHacks we struggled on deciding on what topic or idea should we work on. Each and every member of our team had tons of ideas and the discord group chat was getting chaotic. Additionally, new members who joined later has issues with keeping up as they had to read the whole chat history. 
@@ -170,6 +173,17 @@ The quickest way to get started is to create a simply add HG-Bot to your channel
 <!-- # 🗺 Roadmap -->
 
 <!-- # 🙋‍♀️ Contributing & Community -->
+# Firebase
+
+<h1 align="center">
+  <br>
+  <a href="https://github.com/Ye11ow-Flash/HoyaHacks/blob/main/firebase_snap.png"><img src="https://github.com/Ye11ow-Flash/HoyaHacks/blob/main/firebase_snap.png" alt="HackerGuide" width="800"></a>
+  <br>
+  Firebase Schema
+  <br>
+</h1>
+
+
 
 # 🆘 Where to get help
 
