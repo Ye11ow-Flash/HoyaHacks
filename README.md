@@ -177,7 +177,7 @@ Feel free to reach out to our team members. We will be happy to help you.
 
 ## Team members:
 - [@ye11ow_flash](https://www.linkedin.com/in/jaineel97/)
-- [@hlim0](https://github.com/hlim0)
+- [@hlim0](https://www.linkedin.com/in/heechanlim/)
 - [@SuleymanEminov-98](https://github.com/SuleymanEminov)
 
 <!-- # 📜 License -->
